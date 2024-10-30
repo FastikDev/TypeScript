@@ -16,33 +16,33 @@ const users: User[] = [
 
 console.log(users);
 
-function fetchUserDetails(username: string): User {
+const fetchUserDetails = (username: string): User => {
   const user = users.find((user) => user.username === username);
   if (!user) {
     throw new Error(`User with username ${username} not found`);
   }
   return user;
-}
+};
 
 console.log(fetchUserDetails("viktor_troyan"));
 
-function updateUser(id: number, updates: UpdateUser) {
+const updateUser = (id: number, updates: UpdateUser) => {
   const foundUser = users.find((user) => user.id === id);
   if (!foundUser) {
     console.error("User not found!");
     return;
   }
   Object.assign(foundUser, updates);
-}
+};
 
-function addNewUser(newUser: Omit<User, "id">): User {
+const addNewUser = (newUser: Omit<User, "id">): User => {
   const user: User = {
     id: nextUserId++,
     ...newUser,
   };
   users.push(user);
   return user;
-}
+};
 
 addNewUser({ username: "joe_schmoe", role: "member" });
 
