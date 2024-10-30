@@ -21,7 +21,7 @@ const menu: Pizza[] = [
   { id: nextPizzaId++, name: "Veggie", price: 9 },
 ];
 
-function addNewPizza(pizzaObj: Omit<Pizza, "id">): Pizza {
+const addNewPizza = (pizzaObj: Omit<Pizza, "id">): Pizza => {
   const newPizza = {
     ...pizzaObj,
     id: nextPizzaId++,
@@ -29,11 +29,11 @@ function addNewPizza(pizzaObj: Omit<Pizza, "id">): Pizza {
   menu.push(newPizza);
 
   return newPizza;
-}
+};
 
 const orderQueue: Order[] = [];
 
-function placeOrder(pizzaName: string) {
+const placeOrder = (pizzaName: string) => {
   const selectedPizza = menu.find((pizzaObj) => pizzaObj.name === pizzaName);
 
   if (!selectedPizza) {
@@ -50,12 +50,12 @@ function placeOrder(pizzaName: string) {
   orderQueue.push(newOrder);
 
   return newOrder;
-}
+};
 
-function addToArray<T>(array: T[], item: T): T[] {
+const addToArray = <T>(array: T[], item: T): T[] => {
   array.push(item);
   return array;
-}
+};
 
 addToArray<Pizza>(menu, { id: nextPizzaId++, name: "Bayraktar", price: 12 });
 addToArray<Order>(orderQueue, {
@@ -67,7 +67,7 @@ addToArray<Order>(orderQueue, {
 console.log("Menu", menu);
 console.log("Order", orderQueue);
 
-function completeOrder(orderId: number): Order | undefined {
+const completeOrder = (orderId: number): Order | undefined => {
   const order = orderQueue.find((order) => order.id === orderId);
 
   if (!order) {
@@ -78,19 +78,21 @@ function completeOrder(orderId: number): Order | undefined {
   order.status = "completed";
 
   return order;
-}
+};
 
-function getPizzaDetail(identifier: string | number): Pizza | undefined {
-  if (typeof identifier === "string") {
-    return menu.find(
-      (pizza) =>
-        pizza.name.toLocaleLowerCase() === identifier.toLocaleLowerCase()
-    );
-  } else if (typeof identifier === "number") {
-    return menu.find((pizza) => pizza.id === identifier);
-  } else {
-    throw new Error(
-      "Parameter `identifier` must be either a string or a number"
-    );
-  }
-}
+const getPizzaDetail = (identifier: string | number): Pizza | undefined => {
+  return menu.find((pizza) => {
+    switch (typeof identifier) {
+      case "string":
+        return (
+          pizza.name.toLocaleLowerCase() === identifier.toLocaleLowerCase()
+        );
+      case "number":
+        return pizza.id === identifier;
+      default:
+        throw new Error(
+          "Parameter `identifier` must be either a string or a number"
+        );
+    }
+  });
+};
